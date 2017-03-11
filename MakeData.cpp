@@ -12,5 +12,5 @@ void MakeData ()
 	// 이펙트
 	EFFECTMANAGER->MakeEffect ( "이펙트1", "이펙트1", Effect::KIND_REPEAT, Collider());
 }
-
+// 조명성
 // ㅎㅇ 테스트
