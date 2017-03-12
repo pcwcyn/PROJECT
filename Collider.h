@@ -57,5 +57,6 @@ public:
 	float GetTop () { return m_Rc.top; }
 	float GetRight () { return m_Rc.right; }
 	float GetBottom () { return m_Rc.bottom; }
+
 };
 
