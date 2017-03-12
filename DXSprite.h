@@ -118,5 +118,9 @@ public:
 	void SetHeight ( float height ) { m_Height = height; }
 
 	void SetFrameX(int x) { m_CurrentFrameX = x; }
+	void SetOrigin(float x, float y) { m_Origin = Vector2( x,y ); }
+	void SetCenterOrigin() { m_Origin = Vector2(m_Width/2,m_Height/2); }
+
+	float GetAngle() { return m_Angle; }
 };
 

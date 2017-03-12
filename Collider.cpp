@@ -122,8 +122,9 @@ bool Collider::RectInRect ( DXRECT otherRc, float moveX )
 	if (!m_IsEnable) return false;
 
 	return m_Rc.left + moveX < otherRc.right && m_Rc.right + moveX > otherRc.left &&
-		m_Rc.top < otherRc.bottom && m_Rc.bottom > otherRc.top;
+		m_Rc.top < otherRc.bottom && m_Rc.bottom > otherRc.top&&moveX>0;
 }
+
 
 bool Collider::RectLandingRect(Collider * collider, float Width, float Height,float GravityPlus)
 {
