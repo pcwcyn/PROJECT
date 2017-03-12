@@ -32,6 +32,7 @@ bool Collider::Init ()
 
 void Collider::Init ( float x, float y, int width, int height )
 {
+	m_IsEnable = true;
 	m_Width = width;
 	m_Height = height;
 	m_Rc.left = m_X = x;
@@ -122,6 +123,27 @@ bool Collider::RectInRect ( DXRECT otherRc, float moveX )
 
 	return m_Rc.left + moveX < otherRc.right && m_Rc.right + moveX > otherRc.left &&
 		m_Rc.top < otherRc.bottom && m_Rc.bottom > otherRc.top;
+}
+
+bool Collider::RectLandingRect(Collider * collider, float Width, float Height,float GravityPlus)
+{
+	if (!m_IsEnable)	return false;
+	if (m_Rc.left>collider->GetLeft() - Width / 2 && m_Rc.right<collider->GetRight() + Width / 2)
+	{
+		return collider->GetTop() - Height > m_Rc.top&&collider->GetTop() - Height - GravityPlus <= m_Rc.top;
+	}
+	return false;
+
+}
+
+bool Collider::RectOntheRect(Collider * collider, float Width)
+{
+	if (!m_IsEnable)	return false;
+	if (m_Rc.left>collider->GetLeft() - Width / 2 && m_Rc.right<collider->GetRight() + Width / 2)
+	{
+		return m_Rc.bottom <= collider->GetTop();
+	}
+	return false;
 }
 
 void Collider::PositionToRect ()

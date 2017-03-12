@@ -105,7 +105,7 @@ private:
 public:
 	UINT GetWidth () { return m_Width; }
 	UINT GetHeight () { return m_Height; }
-	void Stop () { m_isStop = true; }
+
 	bool IsOncePlay () { return m_isOncePlay; }
 	int GetCurrentFrameOfMulti () { return m_CurrnetFrameOfMulti; }
 	bool IsChangedFrame ( int frame ) { return m_CurrnetFrameOfMulti == frame && m_isChangedFrame; }
@@ -116,5 +116,7 @@ public:
 	void SetSize ( float sx, float sy ) { m_Scale = Vector2(sx, sy); }
 	void SetWidth ( float width ) { m_Width = width; }
 	void SetHeight ( float height ) { m_Height = height; }
+
+	void SetFrameX(int x) { m_CurrentFrameX = x; }
 };
 

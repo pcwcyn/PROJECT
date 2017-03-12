@@ -59,7 +59,7 @@ bool DXApp::Init (HINSTANCE hInst)
 	m_hAppWnd = NULL;
 	m_ClientWidth = WIN_WIDTH;
 	m_ClientHeight = WIN_HEIGHT;
-	m_AppTitle = "Anipang!";
+	m_AppTitle = "¾Ó~ºò";
 	m_WndStyle = WS_OVERLAPPEDWINDOW;
 
 	m_pDevice = nullptr;

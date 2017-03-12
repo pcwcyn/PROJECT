@@ -29,13 +29,16 @@
 #include "SpriteManager.h"
 #include "EffectManager.h"
 #include "SceneManager.h"
-
+#include "Player.h"
+#include "KeyManager.h"
 // 이름 공간 사용
 using namespace std;
 
 #define SPRITEMANAGER SpriteManager::GetInst()
 #define EFFECTMANAGER EffectManager::GetInst()
 #define SCENEMANAGER  SceneManager::GetInst()
+#define KEYMANAGER KeyManager::GetInst()
+#define PLAYER Player::GetInst()
 
-const int WIN_WIDTH = 800;
-const int WIN_HEIGHT = 600;
+const int WIN_WIDTH = 960;
+const int WIN_HEIGHT = 540;

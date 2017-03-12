@@ -39,6 +39,10 @@ public:
 	// 이동중인 물체에 대한 충돌 처리
 	bool RectInRect ( DXRECT rc, float moveX );
 
+	//은호표 충돌체크 착지할때
+	bool RectLandingRect(Collider* collider, float Width, float Height,float GravityPlus);  
+	//렉트 위에있나 체크
+	bool RectOntheRect(Collider* collider, float Width);
 private:
 	void PositionToRect ();
 
@@ -57,5 +61,7 @@ public:
 	float GetTop () { return m_Rc.top; }
 	float GetRight () { return m_Rc.right; }
 	float GetBottom () { return m_Rc.bottom; }
+
+
 };
 
