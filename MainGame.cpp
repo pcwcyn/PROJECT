@@ -5,15 +5,15 @@
 
 void MainGame::Init ()
 {
-	EFFECTMANAGER->Init ();
+	PLAYER->Init ();
 }
 
 void MainGame::Update ()
 {
-	EFFECTMANAGER->Update ();
+	PLAYER->Update ();
 }
 
 void MainGame::Render ()
 {
-	EFFECTMANAGER->Render ();
+	PLAYER->Render ();
 }
