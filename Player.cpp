@@ -15,12 +15,20 @@ void Player::Init()
 {
 	m_Sprite = SPRITEMANAGER->InsertSpriteData("플레이어머리");
 	I_Body= *SPRITEMANAGER->FindSprite("플레이어몸");
-	I_Arm=*SPRITEMANAGER->FindSprite("플레이어팔2");
+	I_Arm_Front =*SPRITEMANAGER->FindSprite("플레이어팔");
+	I_Arm_Sword = *SPRITEMANAGER->FindSprite("플레이어팔_검");
+	I_Arm_Lance= *SPRITEMANAGER->FindSprite("플레이어팔_창");
+	I_Arm_Wand= *SPRITEMANAGER->FindSprite("플레이어팔_지팡이");
 	I_Jump= *SPRITEMANAGER->FindSprite("플레이어점프");
 	I_Down= *SPRITEMANAGER->FindSprite("플레이어다운");
+
 	m_Sprite.Stop();
+	I_Arm_Front.Stop();
+	//I_Arm_Sword.Stop();
+	//I_Arm_Lance.Stop();
 	I_Body.Stop();
 	I_Jump.Stop();
+	FrontHandType = BackHandType = NONE;
 	m_Width = 25;
 	m_Height = 50;
 	C_Down.Init(m_X, m_Y/2, m_Width, m_Height*2 / 3);
@@ -51,6 +59,14 @@ void Player::Update()
 	{
 		C_Down.Update(m_X+7, m_Y+m_Height/3);
 	}
+	if (IsFrontAttack)
+		FrontAttack();
+	if (KEYMANAGER->isOnceKeyDown('1'))FrontHandType = NONE;
+	if (KEYMANAGER->isOnceKeyDown('2'))FrontHandType = SWORD;
+	if (KEYMANAGER->isOnceKeyDown('3'))FrontHandType = LANCE;
+	if (KEYMANAGER->isOnceKeyDown('4'))FrontHandType = BOOMERANG;
+	if (KEYMANAGER->isOnceKeyDown('5'))FrontHandType = WAND;
+
 }
 
 void Player::Render()
@@ -61,6 +77,7 @@ void Player::Render()
 		{
 		I_Down.Render(m_X, m_Y + m_Height / 3);
 		m_Sprite.Render(m_X+10, m_Y+m_Height / 3);
+		FrontAttackSpriteRender();
 		C_Down.Render();
 		}
 		else
@@ -77,8 +94,8 @@ void Player::Render()
 			}
 			else
 				I_Body.Render(m_X - 12, m_Y + 15);
-			//I_Arm.Render(m_X-7, m_Y + 16);
 			m_Sprite.Render(m_X, m_Y);
+			FrontAttackSpriteRender();
 			m_Collider.Render();
 		}
 	}
@@ -91,7 +108,7 @@ void Player::KeySettig()
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
 		RunFrameCount++;
-		if (RunFrameCount % 10 == 0)RunFrameX++;
+		if (RunFrameCount % 5 == 0)RunFrameX++;
 		if (RunFrameX >=6)RunFrameX = 1;
 		I_Body.SetFrameX(RunFrameX);
 		MoveX =1;
@@ -105,7 +122,7 @@ void Player::KeySettig()
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
 		RunFrameCount++;
-		if (RunFrameCount % 10 == 0)RunFrameX++;
+		if (RunFrameCount % 5 == 0)RunFrameX++;
 		if (RunFrameX >= 6)RunFrameX = 1;
 		I_Body.SetFrameX(RunFrameX);
 		MoveX =-1;
@@ -127,6 +144,11 @@ void Player::KeySettig()
 		IsDown = true;
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))IsDown = false;
+
+	if (KEYMANAGER->isOnceKeyDown('D'))
+	{
+		IsFrontAttack = true;
+	}
 }
 
 void Player::Collision()
@@ -197,4 +219,85 @@ void Player::FrameImageForHead()
 		m_Sprite.SetFrameX(0);
 		HeadFrameX = 0;
 	}
+}
+
+void Player::FrontAttack()
+{
+	switch (FrontHandType)
+	{
+	case NONE:
+		FrontAttackFrameX++;
+		if (FrontAttackFrameX == I_Arm_Front.GetMaxFrameX())
+		{
+			I_Arm_Front.SetFrameX(0);
+			FrontAttackFrameX=0;
+			IsFrontAttack = false;
+			break;
+		}
+		I_Arm_Front.SetFrameX(FrontAttackFrameX);
+		break;
+	case SWORD:
+		FrontAttackFrameX++;
+		if (FrontAttackFrameX == I_Arm_Sword.GetMaxFrameX())
+		{
+			I_Arm_Sword.SetFrameX(0);
+			FrontAttackFrameX = 0;
+			IsFrontAttack = false;
+			break;
+		}
+		I_Arm_Sword.SetFrameX(FrontAttackFrameX);
+		break;
+	case LANCE: case BOOMERANG:
+		FrontAttackFrameX++;
+		if (FrontAttackFrameX == I_Arm_Lance.GetMaxFrameX())
+		{
+			I_Arm_Lance.SetFrameX(0);
+			FrontAttackFrameX = 0;
+			IsFrontAttack = false;
+			break;
+		}
+		I_Arm_Lance.SetFrameX(FrontAttackFrameX);
+		break;
+	case WAND:
+		FrontAttackFrameX++;
+		if (FrontAttackFrameX == I_Arm_Wand.GetMaxFrameX())
+		{
+			I_Arm_Wand.SetFrameX(0);
+			FrontAttackFrameX = 0;
+			IsFrontAttack = false;
+			break;
+		}
+		I_Arm_Wand.SetFrameX(FrontAttackFrameX);
+		break;
+	}
+
+}
+
+void Player::FrontAttackSpriteRender()
+{
+	if (IsFrontAttack)
+	{
+		switch (FrontHandType)
+		{
+		case NONE:
+			if(IsDown)I_Arm_Front.Render(m_X - 5, m_Y + m_Height / 3 + 10);
+			else I_Arm_Front.Render(m_X - 10, m_Y + 14);
+			break;
+		case SWORD:
+			if (IsDown)I_Arm_Sword.Render(m_X - 25, m_Y + m_Height / 3 -4);
+			else I_Arm_Sword.Render(m_X-30 , m_Y );
+			break;
+		case LANCE: case BOOMERANG:
+			if (IsDown)I_Arm_Lance.Render(m_X - 8, m_Y + m_Height / 3 -6);
+			else I_Arm_Lance.Render(m_X -13, m_Y-2 );
+			break;
+		case WAND:
+			if (IsDown)I_Arm_Wand.Render(m_X - 2, m_Y + m_Height / 3 -16);
+			else I_Arm_Wand.Render(m_X - 7, m_Y-12);
+			break;
+		}
+	}
+	else if(IsDown)I_Arm_Front.Render(m_X - 5, m_Y + m_Height / 3 + 10); 
+	else 	I_Arm_Front.Render(m_X - 9, m_Y + 12);
+
 }

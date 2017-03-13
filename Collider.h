@@ -62,9 +62,9 @@ public:
 	float GetRight () { return m_Rc.right; }
 	float GetBottom () { return m_Rc.bottom; }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
+//<<<<<<< HEAD
+//=======
+//
+//>>>>>>> origin/master
 };
 

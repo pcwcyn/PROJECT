@@ -10,8 +10,10 @@ void MakeData ()
 	SPRITEMANAGER->MakeSpriteToSelfImage("이펙트1", "image/effect/effect1.png", 5, 1,  10);
 
 	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어머리", "image/player/p_head.png", 2, 1, 1000);
-	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어팔", "image/player/p_arm.png", 5, 1,  10);
-	SPRITEMANAGER->MakeSpriteToOnceImage("플레이어팔2", "image/player/p_arm2.png");
+	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어팔", "image/player/p_arm.png", 11, 1,  10);
+	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어팔_검", "image/player/p_arm_sword.png",8,1,10);
+	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어팔_창", "image/player/p_arm_lance.png", 10, 1, 10);
+	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어팔_지팡이", "image/player/p_arm_wand.png", 8, 1, 10);
 	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어점프", "image/player/p_jump.png", 2, 1,  1000);
 	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어몸", "image/player/p_body.png", 6, 1,  1000);
 	SPRITEMANAGER->MakeSpriteToOnceImage("플레이어다운", "image/player/p_down.png");

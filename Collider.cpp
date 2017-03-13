@@ -155,9 +155,9 @@ void Collider::PositionToRect ()
 	m_Rc.bottom = m_Y + m_Height;
 }
 
-void Collider::Rectangle ( float left, float top, float right, float bottom )
-{
-	SPRITEMANAGER->FindSprite ( "컬라이더" )->SetFixSize ( right - left, bottom - top );
-	SPRITEMANAGER->FindSprite ( "컬라이더" )->Render ( left, top );
-}
+//void Collider::Rectangle ( float left, float top, float right, float bottom )
+//{
+//	SPRITEMANAGER->FindSprite ( "컬라이더" )->SetFixSize ( right - left, bottom - top );
+//	SPRITEMANAGER->FindSprite ( "컬라이더" )->Render ( left, top );
+//}
 
