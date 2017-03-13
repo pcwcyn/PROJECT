@@ -34,12 +34,12 @@ void Effect::Init ( string spriteKey, EFFECT_KIND effectKind, Collider collider 
 void Effect::Update ()
 {
 	if (m_Collider.IsEnable ())
-		m_Collider.Update (m_X, m_Y);
+		m_Collider.Update (m_WorldX, m_WorldY);
 }
 
 void Effect::Render ()
 {
-	m_Sprite.Render ( m_X, m_Y );
+	m_Sprite.Render ( m_WorldX, m_WorldY );
 
 	if (m_Collider.IsEnable ())
 		m_Collider.Render ();

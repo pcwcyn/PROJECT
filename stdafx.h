@@ -31,6 +31,7 @@
 #include "SceneManager.h"
 #include "Player.h"
 #include "KeyManager.h"
+#include "Camera.h"
 // 이름 공간 사용
 using namespace std;
 

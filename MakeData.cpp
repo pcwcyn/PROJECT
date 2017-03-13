@@ -15,13 +15,14 @@ void MakeData ()
 	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어점프", "image/player/p_jump.png", 2, 1,  1000);
 	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어몸", "image/player/p_body.png", 6, 1,  1000);
 
-
 	SPRITEMANAGER->MakeSpriteToSelfImage("아이템무기", "image/item/i_weapon.png", 4, 1,  1000);
 	SPRITEMANAGER->MakeSpriteToSelfImage("아이템갑옷", "image/item/i_armor.png", 4, 1, 1000);
 	SPRITEMANAGER->MakeSpriteToSelfImage("아이템헬멧", "image/item/i_helmet.png", 4, 1, 1000);
 	SPRITEMANAGER->MakeSpriteToSelfImage("아이템물약", "image/item/i_oile.png", 4, 1, 1000);
 
-	SPRITEMANAGER->MakeSpriteToOnceImage("컬라이더", "image/collider/rect.png");
+	SPRITEMANAGER->MakeSpriteToOnceImage("컬라이더빨강", "image/collider/rect_r.png");
+	SPRITEMANAGER->MakeSpriteToOnceImage ( "컬라이더파랑", "image/collider/rect_g.png" );
+	SPRITEMANAGER->MakeSpriteToOnceImage ( "컬라이더초록", "image/collider/rect_b.png" );
 
 	// 이펙트
 	//EFFECTMANAGER->MakeEffect ( "이펙트1", "이펙트1", Effect::KIND_REPEAT, Collider());

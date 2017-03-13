@@ -6,8 +6,10 @@
 class Object
 {
 protected:
-	float	 m_X;	      // 위치 X	
-	float	 m_Y;	      // 위치 Y
+	float	 m_WorldX;	  // 세계 좌표  X	
+	float	 m_WorldY;	  // 세계 좌표 Y
+	float	 m_ScreenX;	  // 화면 좌표 X
+	float	 m_ScreenY;	  // 화면 좌표 Y
 	float	 m_Width;     // 오브젝트 폭
 	float	 m_Height;    // 오브젝트 높이
 	bool     m_isDestroy; // 오브젝트 파괴 여부
@@ -15,15 +17,15 @@ protected:
 	Collider m_Collider;  // 컬라이더
 
 public:	// GETTER
-	float GetX () { return m_X; }
-	float GetY () { return m_Y; }
+	float GetWorldX () { return m_WorldX; }
+	float GetWorldY () { return m_WorldY; }
 	float GetWidth () { return m_Width; }
 	float GetHeight () { return m_Height; }
 	bool  IsDestroy () { return m_isDestroy; }
 
 public: // SETTER
-	void SetX ( float x ) { m_X = x; }
-	void SetY ( float y ) { m_Y = y; }
+	void SetWorldX ( float x ) { m_WorldX = x; }
+	void SetWorldY ( float y ) { m_WorldY = y; }
 	void SetWidth ( float width ) { m_Width = width; }
 	void SetHeight ( float height ) { m_Height = height; }
 

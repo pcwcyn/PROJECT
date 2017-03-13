@@ -11,6 +11,13 @@ struct DXRECT
 class Collider
 {
 public:
+	enum COLLIDER_COLOR
+	{
+		COLOR_RED,
+		COLOR_BLUE,
+		COLOR_GREEN,
+	};
+public:
 	Collider ();
 	~Collider ();
 
@@ -20,7 +27,7 @@ public:
 	void Init (int width, int height);
 	void Update ();
 	void Update ( float x, float y );
-	void Render ();
+	void Render ( COLLIDER_COLOR color = COLOR_RED );
 
 public:
 	// 충돌 활성화
@@ -41,6 +48,7 @@ public:
 
 	//은호표 충돌체크 착지할때
 	bool RectLandingRect(Collider* collider, float Width, float Height,float GravityPlus);  
+
 	//렉트 위에있나 체크
 	bool RectOntheRect(Collider* collider, float Width);
 private:
@@ -51,8 +59,8 @@ private:
 	unsigned int m_Width;
 	unsigned int m_Height;
 	DXRECT m_Rc;
-	float m_X;
-	float m_Y;
+	float m_WorldX;
+	float m_WorldY;
 
 public:
 	bool IsEnable () { return m_IsEnable; }
@@ -62,9 +70,7 @@ public:
 	float GetRight () { return m_Rc.right; }
 	float GetBottom () { return m_Rc.bottom; }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
+public:
+	static void Rectangle (float left, float top, float right, float bottom);
 };
 

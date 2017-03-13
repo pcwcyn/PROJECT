@@ -15,8 +15,8 @@ void Item::Init(E_ITEM_KIND I_KIND, E_ITEM_ELEMENT I_ELEMENT, float x, float y)
 {
 	m_ITEM_KIND = I_KIND;
 	m_ITEM_ELEMENT = I_ELEMENT;
-	m_X = x;
-	m_Y = y;
+	m_WorldX = x;
+	m_WorldY = y;
 	switch (m_ITEM_KIND)
 	{
 	case ITEM_WEAPON:m_Sprite = SPRITEMANAGER->InsertSpriteData("플레이어무기");

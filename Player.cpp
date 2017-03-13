@@ -24,8 +24,8 @@ void Player::Init()
 	C_Earth.Init(0, WIN_HEIGHT - 100, 800, 100);
 	Speed = 3.f;
 	GravityPlus = 0;
-	m_Collider.Init(m_X, m_Y, m_Width, m_Height);
-	RC_Player = { m_X,m_Y,m_X + m_Width,m_Y + m_Height };
+	m_Collider.Init(m_WorldX, m_WorldY, m_Width, m_Height);
+	RC_Player = { m_WorldX,m_WorldY,m_WorldX + m_Width,m_WorldY + m_Height };
 	IsGravity = true;
 	IsJumping = false;
 	JumpCount = RunFrameCount= RunFrameX=0;
@@ -33,10 +33,10 @@ void Player::Init()
 
 void Player::Update()
 {
-	RC_Player = { m_X,m_Y,m_X + m_Width,m_Y + m_Height };
+	RC_Player = { m_WorldX,m_WorldY,m_WorldX + m_Width,m_WorldY + m_Height };
 	Collision();
 	KeySettig();
-	m_Collider.Update(m_X, m_Y);
+	m_Collider.Update(m_WorldX, m_WorldY);
 
 }
 
@@ -46,17 +46,17 @@ void Player::Render()
 	if (IsJumping)
 	{
 		I_Jump.SetFrameX(0);
-		I_Jump.Render(m_X -12, m_Y + 15);
+		I_Jump.Render(m_ScreenX -12, m_ScreenY + 15);
 	}
 	else if (IsGravity)
 	{
 		I_Jump.SetFrameX(1);
-		I_Jump.Render(m_X -12, m_Y + 15);
+		I_Jump.Render(m_ScreenX -12, m_ScreenY + 15);
 	}
 	else
-	I_Body.Render(m_X-12, m_Y + 15);
-	//I_Arm.Render(m_X-7, m_Y + 16);
-	m_Sprite.Render(m_X, m_Y);
+	I_Body.Render(m_ScreenX-12, m_ScreenY+ 15);
+	//I_Arm.Render(m_WorldX-7, m_WorldY + 16);
+	m_Sprite.Render(m_ScreenX, m_ScreenY);
 	C_Earth.Render();
 	m_Collider.Render();
 }
@@ -69,7 +69,7 @@ void Player::KeySettig()
 		if (RunFrameCount % 10 == 0)RunFrameX++;
 		if (RunFrameX >=6)RunFrameX = 1;
 		I_Body.SetFrameX(RunFrameX);
-		m_X += Speed;
+		m_WorldX += Speed;
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
@@ -82,7 +82,7 @@ void Player::KeySettig()
 		if (RunFrameCount % 10 == 0)RunFrameX++;
 		if (RunFrameX >= 6)RunFrameX = 1;
 		I_Body.SetFrameX(RunFrameX);
-		m_X -= Speed;
+		m_WorldX -= Speed;
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 	{
@@ -99,7 +99,7 @@ void Player::Collision()
 		{
 			IsGravity = false;
 			GravityPlus = 0;
-			m_Y = C_Earth.GetTop() - 50;//m_Height
+			m_WorldY = C_Earth.GetTop() - 50;//m_Height
 		}
 		if(!m_Collider.RectOntheRect(&C_Earth, m_Width)) IsGravity = true;
 	}
@@ -107,7 +107,7 @@ void Player::Collision()
 	if (IsGravity && !IsJumping)
 	{
 		GravityPlus += Gravity / 5;
-		m_Y += GravityPlus;
+		m_WorldY += GravityPlus;
 	}
 	if (!IsGravity)
 	{
@@ -119,7 +119,7 @@ void Player::Collision()
 
 	if (IsJumping)
 	{
-		m_Y -= 5;
+		m_WorldY -= 5;
 		JumpCount++;
 		if (JumpCount > 20)
 		{
