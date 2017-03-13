@@ -88,7 +88,7 @@ void DXSprite::Load ( const wchar_t * file )
 	//{
 	////	MessageBox ( DXApp::GetInst ()->GetHwnd (), "이미지로드 실패", "", MB_OK );
 	//}
-	m_Origin = Vector2 ( 0, 0 );
+	m_Origin = Vector2 (0,0);
 	m_SourceRect.left = 0;
 	m_SourceRect.top = 0;
 	m_SourceRect.right = m_Width;

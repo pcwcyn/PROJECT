@@ -70,7 +70,14 @@ public:
 	float GetRight () { return m_Rc.right; }
 	float GetBottom () { return m_Rc.bottom; }
 
+<<<<<<< HEAD
 public:
 	static void Rectangle (float left, float top, float right, float bottom);
+=======
+//<<<<<<< HEAD
+//=======
+//
+//>>>>>>> origin/master
+>>>>>>> origin/master
 };
 

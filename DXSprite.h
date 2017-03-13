@@ -117,6 +117,17 @@ public:
 	void SetWidth ( float width ) { m_Width = width; }
 	void SetHeight ( float height ) { m_Height = height; }
 
+
+	int GetFrameX() { return m_CurrentFrameX; }
 	void SetFrameX(int x) { m_CurrentFrameX = x; }
+	int GetFrameY() { return m_CurrentFrameY; }
+	void SetFrameY(int y) { m_CurrentFrameY = y; }
+	int GetMaxFrameX() { return m_MaxFrameX; }
+	int GetMaxFrameY() { return m_MaxFrameY; }
+
+	void SetOrigin(float x, float y) { m_Origin = Vector2( x,y ); }
+	void SetCenterOrigin() { m_Origin = Vector2(m_Width/2,m_Height/2); }
+
+	float GetAngle() { return m_Angle; }
 };
 
