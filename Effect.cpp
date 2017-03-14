@@ -27,7 +27,7 @@ void Effect::Init ( string spriteKey, EFFECT_KIND effectKind, Collider collider 
 	m_Height = m_Sprite.GetHeight ();
 	m_Collider   = collider;
 	m_effectKind = effectKind;
-	m_Collider.Init ( m_Width, m_Height );
+	m_Collider.Init ( 0, 0, m_Width, m_Height );
 	m_Collider.Enable ();
 }
 

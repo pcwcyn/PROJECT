@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Singleton.h"
 class Camera :
 	public Singleton<Camera>
@@ -8,30 +8,41 @@ public:
 	const float CAMERA_MAX_Z = 1000;
 	const float MAX_SCALE = 10;
 	const float MIN_SCALE = 0.1f;
+
+	static bool m_isRenderingCollider;
+
 public:
 	Camera ();
 	~Camera ();
 
 private:
-	float m_X;			// Ä«¸Ş¶ó À§Ä¡
-	float m_Y;			// Ä«¸Ş¶ó À§Ä¡
-	float m_Z;			// Ä«¸Ş¸® À§Ä¡(1~1000)
-	float m_ScreenTargetX;	// Ä«¸Ş¶ó°¡ Âï°í ÀÖ´Â ÁöÁ¡ (È­¸é ÁÂÇ¥)
-	float m_ScreenTargetY;	// Ä«¸Ş¶ó°¡ Âï°í ÀÖ´Â ÁöÁ¡ (È­¸é ÁÂÇ¥)
-	float m_WorldTargetX;	// Ä«¸Ş¶ó°¡ Âï°í ÀÖ´Â ÁöÁ¡ (¼¼°è ÁÂÇ¥)
-	float m_WorldTargetY;	// Ä«¸Ş¶ó°¡ Âï°í ÀÖ´Â ÁöÁ¡ (¼¼°è ÁÂÇ¥)
-	float m_Speed;		// Ä«¸Ş¶ó ¼Óµµ
+	float m_X;			// ì¹´ë©”ë¼ ì„¸ê³„ ì¢Œí‘œ X
+	float m_Y;			// ì¹´ë©”ë¼ ì„¸ê³„ ì¢Œí‘œ Y
+	float m_Z;			// ì¹´ë©”ë¼ ì„¸ê³„ ì¢Œí‘œ Z
+	float m_ScreenTargetX;	// ì¹´ë©”ë¼ í™”ë©´ì´ ì°ëŠ” ìœˆë„ìš° í™”ë©´ì˜ ì§€ì  X
+	float m_ScreenTargetY;	// ì¹´ë©”ë¼ í™”ë©´ì´ ì°ëŠ” ìœˆë„ìš° í™”ë©´ì˜ ì§€ì  Y
+	float m_WorldTargetX;	// ì¹´ë©”ë¼ í™”ë©´ì´ ì°ëŠ” ì„¸ê³„ì˜ ì§€ì  X
+	float m_WorldTargetY;	// ì¹´ë©”ë¼ í™”ë©´ì´ ì°ëŠ” ì„¸ê³„ì˜ ì§€ì  Y
 
-	float m_WorldWidth; // ¿ùµå °¡·Î Å©±â
-	float m_WorldHeight; // ¿ùµå ¼¼·Î Å©±â
+	float m_Speed;		// ì¹´ë©”ë¼ ìˆ˜ë™ ì¡°ì‘ ì†ë„
+
+	float m_WorldWidth; // ì¹´ë©”ë¼ê°€ ì¡´ì¬í•˜ê³  ìˆëŠ” ì„¸ê³„ì˜ í­
+	float m_WorldHeight; // ì¹´ë©”ë¼ê°€ ì¡´ì¬í•˜ê³  ìˆëŠ” ì„¸ê³„ì˜ ë„ˆë¹„
+
+	Object* m_LinkObject;	// 3ì¸ì¹­ ì¹´ë©”ë¼ë¥¼ ìœ„í•œ ì—°ê²° ì˜¤ë¸Œì íŠ¸.
 
 public:
-	void Init (float x, float y, float z, float targetX, float targetY);
+	void Init ( float x, float y, float z, float targetX, float targetY );
 	void Update ();
 	void SetWorld ( float width, float height );
 
 public:
+	// ì˜¤ë¸Œì íŠ¸ ìŠ¤í¬ë¦° ë³€í™˜
 	void WorldToScreen ( Object* object );
-	void WorldToScreen ( float* screenX, float* screenY, float worldX, float worldY );
-};
 
+	// ì˜¤ë¸Œì íŠ¸ ì™¸ ê°ì²´ì˜ ìŠ¤í¬ë¦° ë³€í•œ
+	void WorldToScreen ( float* screenX, float* screenY, float worldX, float worldY );
+
+	// ì˜¤ë¸Œì íŠ¸ì™€ ì¹´ë©”ë¼ë¥¼ ì—°ê²°
+	void LinkObject ( Object* object );
+};

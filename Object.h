@@ -26,6 +26,8 @@ public:	// GETTER
 public: // SETTER
 	void SetWorldX ( float x ) { m_WorldX = x; }
 	void SetWorldY ( float y ) { m_WorldY = y; }
+	void SetScreenX ( float x ) { m_ScreenX = x; }
+	void SetScreenY ( float y ) { m_ScreenY = y; }
 	void SetWidth ( float width ) { m_Width = width; }
 	void SetHeight ( float height ) { m_Height = height; }
 

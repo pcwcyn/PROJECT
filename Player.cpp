@@ -31,18 +31,12 @@ void Player::Init()
 	FrontHandType = BackHandType = NONE;
 	m_Width = 25;
 	m_Height = 50;
-	C_Down.Init(m_X, m_Y/2, m_Width, m_Height*2 / 3);
+	C_Down.Init(m_WorldX, m_WorldY/2, m_Width, m_Height*2 / 3);
 	C_Earth.Init(0, WIN_HEIGHT - 100, 800, 100);
 	C_Wall.Init(500, 400, 50, 600);
 	Speed = 3.f;
-<<<<<<< HEAD
-	GravityPlus = 0;
-	m_Collider.Init(m_WorldX, m_WorldY, m_Width, m_Height);
-	RC_Player = { m_WorldX,m_WorldY,m_WorldX + m_Width,m_WorldY + m_Height };
-=======
 	GravityPlus = ShieldTimeCount=0;
-	m_Collider.Init(m_X, m_Y, m_Width, m_Height);
->>>>>>> origin/master
+	m_Collider.Init(m_WorldX, m_WorldY, m_Width, m_Height);
 	IsGravity = true;
 	IsJumping = IsAttacked= IsDown=false;
 	JumpCount = RunFrameCount= RunFrameX=0;
@@ -51,16 +45,10 @@ void Player::Init()
 
 void Player::Update()
 {
-<<<<<<< HEAD
-	RC_Player = { m_WorldX,m_WorldY,m_WorldX + m_Width,m_WorldY + m_Height };
-	Collision();
-	KeySettig();
-	m_Collider.Update(m_WorldX, m_WorldY);
-=======
 	FrameImageForHead(); 
 	Collision();
 	KeySettig();
-	m_Collider.Update(m_X, m_Y);
+	m_Collider.Update(m_WorldX, m_WorldY);
 	if(KEYMANAGER->isOnceKeyDown('T'))
 	{
 		IsAttacked = true;
@@ -69,7 +57,7 @@ void Player::Update()
 	Shield();
 	if (IsDown)
 	{
-		C_Down.Update(m_X+7, m_Y+m_Height/3);
+		C_Down.Update(m_WorldX+7, m_WorldY+m_Height/3);
 	}
 	if (IsFrontAttack)
 		FrontAttack();
@@ -78,35 +66,25 @@ void Player::Update()
 	if (KEYMANAGER->isOnceKeyDown('3'))FrontHandType = LANCE;
 	if (KEYMANAGER->isOnceKeyDown('4'))FrontHandType = BOOMERANG;
 	if (KEYMANAGER->isOnceKeyDown('5'))FrontHandType = WAND;
->>>>>>> origin/master
-
 }
 
 void Player::Render()
 {
-<<<<<<< HEAD
-	//m_Sprite.SetAngle();
-	if (IsJumping)
-	{
-		I_Jump.SetFrameX(0);
-		I_Jump.Render(m_ScreenX -12, m_ScreenY + 15);
-	}
-	else if (IsGravity)
-	{
-		I_Jump.SetFrameX(1);
-		I_Jump.Render(m_ScreenX -12, m_ScreenY + 15);
-	}
-	else
-	I_Body.Render(m_ScreenX-12, m_ScreenY+ 15);
-	//I_Arm.Render(m_WorldX-7, m_WorldY + 16);
-	m_Sprite.Render(m_ScreenX, m_ScreenY);
-=======
+	CAMERA->WorldToScreen ( this );
+
+	// 회전 테스트
+	static float angle;
+	angle++;
+	I_Body.SetCenterOffset ( 9, 0 );
+	I_Body.Rotate ( angle );
+
+
 	if (!IsShieldOn)
 	{
 		if (IsDown)
 		{
-		I_Down.Render(m_X, m_Y + m_Height / 3);
-		m_Sprite.Render(m_X+10, m_Y+m_Height / 3);
+		I_Down.Render(m_ScreenX, m_ScreenY + m_Height / 3);
+		m_Sprite.Render(m_ScreenX+10, m_ScreenY+m_Height / 3);
 		FrontAttackSpriteRender();
 		C_Down.Render();
 		}
@@ -115,21 +93,20 @@ void Player::Render()
 			if (IsJumping)
 			{
 				I_Jump.SetFrameX(0);
-				I_Jump.Render(m_X - 12, m_Y + 15);
+				I_Jump.Render(m_ScreenX - 12, m_ScreenY + 15);
 			}
 			else if (IsGravity)
 			{
 				I_Jump.SetFrameX(1);
-				I_Jump.Render(m_X - 12, m_Y + 15);
+				I_Jump.Render(m_ScreenX - 12, m_ScreenY + 15);
 			}
 			else
-				I_Body.Render(m_X - 12, m_Y + 15);
-			m_Sprite.Render(m_X, m_Y);
+				I_Body.Render(m_ScreenX - 12, m_ScreenY + 15);
+			m_Sprite.Render(m_ScreenX, m_ScreenY);
 			FrontAttackSpriteRender();
 			m_Collider.Render();
 		}
 	}
->>>>>>> origin/master
 	C_Earth.Render();
 	C_Wall.Render();
 }
@@ -142,12 +119,9 @@ void Player::KeySettig()
 		if (RunFrameCount % 5 == 0)RunFrameX++;
 		if (RunFrameX >=6)RunFrameX = 1;
 		I_Body.SetFrameX(RunFrameX);
-<<<<<<< HEAD
 		m_WorldX += Speed;
-=======
+
 		MoveX =1;
-		m_X += Speed;
->>>>>>> origin/master
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
@@ -160,12 +134,10 @@ void Player::KeySettig()
 		if (RunFrameCount % 5 == 0)RunFrameX++;
 		if (RunFrameX >= 6)RunFrameX = 1;
 		I_Body.SetFrameX(RunFrameX);
-<<<<<<< HEAD
+
 		m_WorldX -= Speed;
-=======
+
 		MoveX =-1;
-		m_X -= Speed;
->>>>>>> origin/master
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 	{
@@ -175,7 +147,7 @@ void Player::KeySettig()
 
 	if (m_Collider.RectInRect(C_Wall.GetRect(), Speed))
 	{
-		m_X -= Speed*MoveX;
+		m_WorldX -= Speed*MoveX;
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_DOWN)&&!IsJumping&&!IsGravity)
@@ -205,11 +177,7 @@ void Player::Collision()
 		{
 			IsGravity = false;
 			GravityPlus = 0;
-<<<<<<< HEAD
-			m_WorldY = C_Earth.GetTop() - 50;//m_Height
-=======
-			m_Y = C_Earth.GetTop() - m_Height;
->>>>>>> origin/master
+			m_WorldY = C_Earth.GetTop() - m_Height;
 		}
 	 if(!m_Collider.RectOntheRect(&C_Earth, m_Width)) IsGravity = true;
 	}
@@ -323,24 +291,24 @@ void Player::FrontAttackSpriteRender()
 		switch (FrontHandType)
 		{
 		case NONE:
-			if(IsDown)I_Arm_Front.Render(m_X - 5, m_Y + m_Height / 3 + 10);
-			else I_Arm_Front.Render(m_X - 10, m_Y + 14);
+			if(IsDown)I_Arm_Front.Render(m_ScreenX - 5, m_ScreenY + m_Height / 3 + 10);
+			else I_Arm_Front.Render(m_ScreenX - 10, m_ScreenY + 14);
 			break;
 		case SWORD:
-			if (IsDown)I_Arm_Sword.Render(m_X - 25, m_Y + m_Height / 3 -4);
-			else I_Arm_Sword.Render(m_X-30 , m_Y );
+			if (IsDown)I_Arm_Sword.Render(m_ScreenX - 25, m_ScreenY + m_Height / 3 -4);
+			else I_Arm_Sword.Render(m_ScreenX-30 , m_ScreenY );
 			break;
 		case LANCE: case BOOMERANG:
-			if (IsDown)I_Arm_Lance.Render(m_X - 8, m_Y + m_Height / 3 -6);
-			else I_Arm_Lance.Render(m_X -13, m_Y-2 );
+			if (IsDown)I_Arm_Lance.Render(m_ScreenX - 8, m_ScreenY + m_Height / 3 -6);
+			else I_Arm_Lance.Render(m_ScreenX -13, m_ScreenY-2 );
 			break;
 		case WAND:
-			if (IsDown)I_Arm_Wand.Render(m_X - 2, m_Y + m_Height / 3 -16);
-			else I_Arm_Wand.Render(m_X - 7, m_Y-12);
+			if (IsDown)I_Arm_Wand.Render(m_ScreenX - 2, m_ScreenY + m_Height / 3 -16);
+			else I_Arm_Wand.Render(m_ScreenX - 7, m_ScreenY-12);
 			break;
 		}
 	}
-	else if(IsDown)I_Arm_Front.Render(m_X - 5, m_Y + m_Height / 3 + 10); 
-	else 	I_Arm_Front.Render(m_X - 9, m_Y + 12);
+	else if(IsDown)I_Arm_Front.Render(m_ScreenX - 5, m_ScreenY + m_Height / 3 + 10); 
+	else 	I_Arm_Front.Render(m_ScreenX - 9, m_ScreenY + 12);
 
 }

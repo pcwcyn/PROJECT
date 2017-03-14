@@ -40,6 +40,7 @@ using namespace std;
 #define SCENEMANAGER  SceneManager::GetInst()
 #define KEYMANAGER KeyManager::GetInst()
 #define PLAYER Player::GetInst()
+#define CAMERA Camera::GetInst()
 
 const int WIN_WIDTH = 960;
 const int WIN_HEIGHT = 540;

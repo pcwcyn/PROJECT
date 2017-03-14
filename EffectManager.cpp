@@ -69,8 +69,8 @@ void EffectManager::MakeEffect ( string effectKey, string spriteKey, Effect::EFF
 void EffectManager::CreateEffect ( string effectKey, float x, float y )
 {
 	Effect effect = InsertEffectData ( effectKey );
-	effect.SetX ( x );
-	effect.SetY ( y );
+	effect.SetWorldX ( x );
+	effect.SetWorldY ( y );
 
 	m_EffectList.push_back(effect);
 }

@@ -55,4 +55,5 @@ public:
 	ID3D11DeviceContext* GetContext () { return m_pImmediateCotext; }
 	ID3D11BlendState* GetBlendState () { return m_pBlendState; }
 	HWND GetHwnd () { return m_hAppWnd; }
+	BYTE* GetPixel ( ID3D11Resource* sourTexture, float x, float y);
 };

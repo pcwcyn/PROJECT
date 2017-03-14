@@ -23,11 +23,10 @@ public:
 
 public:
 	bool Init ();
-	void Init ( float x, float y, int width, int height );
-	void Init (int width, int height);
+	void Init ( float x, float y, int width, int height, COLLIDER_COLOR color = COLOR_RED );
 	void Update ();
 	void Update ( float x, float y );
-	void Render ( COLLIDER_COLOR color = COLOR_RED );
+	void Render ( );
 
 public:
 	// 충돌 활성화
@@ -59,8 +58,11 @@ private:
 	unsigned int m_Width;
 	unsigned int m_Height;
 	DXRECT m_Rc;
+	float m_ScreenX;
+	float m_ScreenY;
 	float m_WorldX;
 	float m_WorldY;
+	COLLIDER_COLOR m_Color;
 
 public:
 	bool IsEnable () { return m_IsEnable; }
@@ -70,14 +72,7 @@ public:
 	float GetRight () { return m_Rc.right; }
 	float GetBottom () { return m_Rc.bottom; }
 
-<<<<<<< HEAD
 public:
 	static void Rectangle (float left, float top, float right, float bottom);
-=======
-//<<<<<<< HEAD
-//=======
-//
-//>>>>>>> origin/master
->>>>>>> origin/master
 };
 

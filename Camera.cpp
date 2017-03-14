@@ -1,9 +1,13 @@
+ï»¿
 #include "stdafx.h"
 #include "Camera.h"
+#include "DXApp.h"
 
+bool Camera::m_isRenderingCollider = true;
 
 Camera::Camera ()
 {
+	m_LinkObject = NULL;
 }
 
 
@@ -23,37 +27,56 @@ void Camera::Init ( float x, float y, float z, float screenTargetX, float screen
 
 void Camera::Update ()
 {
-	if (KEYMANAGER->isStayKeyDown ( 'A' ))
+	DXApp::GetInst ()->DrawDXText ( 10, 10, L"F1 Key Rendering Collider On/Off " );
+
+	// ì¹´ë©”ë¼ì™€ ì˜¤ë¸Œì íŠ¸ê°€ ì—°ê²°ë˜ì–´ ìˆë‹¤ë©´
+	if (m_LinkObject)
 	{
-		m_X -= m_Speed;
+		//ì¹´ë©”ë¼ì˜ ìœ„ì¹˜ëŠ” ê³§ ì˜¤ë¸Œì íŠ¸ì˜ ì„¸ê³„ ì¢Œí‘œê°€ ëœë‹¤
+		m_X = m_LinkObject->GetWorldX () - m_ScreenTargetX;
+		m_Y = m_LinkObject->GetWorldY () - m_ScreenTargetY;
 	}
-	if (KEYMANAGER->isStayKeyDown ( 'D' ))
+	// ì¹´ë©”ë¼ ì§ì ‘ ì´ë™
+	else
 	{
-		m_X += m_Speed;
-	}
-	if (KEYMANAGER->isStayKeyDown ( 'W' ))
-	{
-		m_Y -= m_Speed;
-	}
-	if (KEYMANAGER->isStayKeyDown ( 'S' ))
-	{
-		m_Y += m_Speed;
-	}
-	if (KEYMANAGER->isStayKeyDown ( VK_F4 ))
-	{
-		if (m_Z <= CAMERA_MIN_Z)
-			m_Z = CAMERA_MIN_Z;
-		else
-			m_Z -= m_Speed;
-	}
-	if (KEYMANAGER->isStayKeyDown ( VK_F5 ))
-	{
-		if (m_Z >= CAMERA_MAX_Z)
-			m_Z = CAMERA_MAX_Z;
-		else
-			m_Z += m_Speed;
+		if (KEYMANAGER->isOnceKeyDown ( VK_F1 ))
+		{
+			m_isRenderingCollider = !m_isRenderingCollider;
+		}
+
+		if (KEYMANAGER->isStayKeyDown ( VK_NUMPAD4 ))
+		{
+			m_X -= m_Speed;
+		}
+		if (KEYMANAGER->isStayKeyDown ( VK_NUMPAD6 ))
+		{
+			m_X += m_Speed;
+		}
+		if (KEYMANAGER->isStayKeyDown ( VK_NUMPAD8 ))
+		{
+			m_Y -= m_Speed;
+		}
+		if (KEYMANAGER->isStayKeyDown ( VK_NUMPAD2 ))
+		{
+			m_Y += m_Speed;
+		}
+		if (KEYMANAGER->isStayKeyDown ( VK_F4 ))
+		{
+			if (m_Z <= CAMERA_MIN_Z)
+				m_Z = CAMERA_MIN_Z;
+			else
+				m_Z -= m_Speed;
+		}
+		if (KEYMANAGER->isStayKeyDown ( VK_F5 ))
+		{
+			if (m_Z >= CAMERA_MAX_Z)
+				m_Z = CAMERA_MAX_Z;
+			else
+				m_Z += m_Speed;
+		}
 	}
 
+	// ì¹´ë©”ë¼ê°€ í™”ë©´ì„ ë„˜ì–´ê°€ì§€ ì•Šê²Œ ë°©ì§€í•¨
 	if (m_X < 0)
 		m_X = 0;
 	if (m_X > m_WorldWidth)
@@ -61,9 +84,10 @@ void Camera::Update ()
 
 	if (m_Y < 0)
 		m_Y = 0;
-	if (m_Y > m_WorldWidth)
-		m_X = m_WorldWidth;
+	if (m_Y > m_WorldHeight)
+		m_X = m_WorldHeight;
 
+	// ì¹´ë©”ë¼ê°€ ì°ëŠ” ì„¸ê³„ì˜ ì§€ì ì„ êµ¬í•¨
 	m_WorldTargetX = m_X + m_ScreenTargetX;
 	m_WorldTargetY = m_Y + m_ScreenTargetY;
 }
@@ -76,19 +100,17 @@ void Camera::SetWorld ( float width, float height )
 
 void Camera::WorldToScreen ( Object* object )
 {
-	// Ä«¸Ş¶ó Áß½ÉÁ¡ Å¸°ÙÀ¸·ÎºÎÅÍ ¿ÀºêÁ§Æ® ¼¼°è ÁÂÇ¥¿¡ ´ëÇÑ ¿¬»ê
-	object->SetScreenX( object->GetWorldX () - m_WorldTargetX + m_ScreenTargetX );
-	object->SetScreenY( object->GetWorldY () - m_WorldTargetY + m_ScreenTargetY );
-
-	//// Z ÁÂÇ¥
-	//object->SetScreenScaleX ( object->GetScaleX () * m_Z / MAX_SCALE );
-	//object->SetScreenScaleY ( object->GetScaleY () * m_Z / MAX_SCALE );
-	//object->GetSprite ()->SetSize ( object->GetScreenScaleX (), object->GetScreenScaleY() );
+	object->SetScreenX ( object->GetWorldX () - m_WorldTargetX + m_ScreenTargetX );
+	object->SetScreenY ( object->GetWorldY () - m_WorldTargetY + m_ScreenTargetY );
 }
 
 void Camera::WorldToScreen ( float * screenX, float * screenY, float worldX, float worldY )
 {
-	// Ä«¸Ş¶ó Áß½ÉÁ¡ Å¸°ÙÀ¸·ÎºÎÅÍ ¿ÀºêÁ§Æ® ¼¼°è ÁÂÇ¥¿¡ ´ëÇÑ ¿¬»ê
-	*screenX =  ( worldX - m_WorldTargetX + m_ScreenTargetX );
+	*screenX = ( worldX - m_WorldTargetX + m_ScreenTargetX );
 	*screenY = ( worldY - m_WorldTargetY + m_ScreenTargetY );
+}
+
+void Camera::LinkObject ( Object * object )
+{
+	m_LinkObject = object;
 }

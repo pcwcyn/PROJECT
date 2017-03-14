@@ -16,10 +16,9 @@ void MakeData ()
 	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어팔_지팡이", "image/player/p_arm_wand.png", 8, 1, 10);
 	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어점프", "image/player/p_jump.png", 2, 1,  1000);
 	SPRITEMANAGER->MakeSpriteToSelfImage("플레이어몸", "image/player/p_body.png", 6, 1,  1000);
-<<<<<<< HEAD
-=======
+
 	SPRITEMANAGER->MakeSpriteToOnceImage("플레이어다운", "image/player/p_down.png");
->>>>>>> origin/master
+
 
 	SPRITEMANAGER->MakeSpriteToSelfImage("아이템무기", "image/item/i_weapon.png", 4, 1,  1000);
 	SPRITEMANAGER->MakeSpriteToSelfImage("아이템갑옷", "image/item/i_armor.png", 4, 1, 1000);

@@ -8,6 +8,7 @@
 #include <WICTextureLoader.h>
 #include "DXApp.h"
 #include "SimpleMath.h"
+
 DXSprite::DXSprite ()	:
 	m_CurrnetFrameOfMulti (0),
 	m_MaxFrameOfMulti (0),
@@ -20,7 +21,10 @@ DXSprite::DXSprite ()	:
 	m_isChangedFrame(false),
 	m_isStop(false),
 	m_Angle(0),
-	m_Scale(1,1)
+	m_Scale(1,1),
+	m_SpriteEffect( DirectX::SpriteEffects_None ),
+	m_CenterOffsetX(0),
+	m_CenterOffsetY(0)
 {
 }
 
@@ -42,6 +46,12 @@ void DXSprite::InitSelfImage ( int delay, int maxFrameX, int maxFrameY )
 	m_MaxFrameY = maxFrameY;
 	m_SpriteKind = KIND_SELF;
 	m_Delay = delay;
+}
+
+// 좌우반전
+void DXSprite::XFlip ()
+{
+	m_SpriteEffect = DirectX::SpriteEffects_FlipHorizontally;
 }
 
 //void DXSprite::Render ( float x, float y, bool isXFlip)
@@ -84,11 +94,11 @@ void DXSprite::Load ( const wchar_t * file )
 		//MessageBox ( DXApp::GetInst ()->GetHwnd (), "이미지로드 실패", "", MB_OK );
 	}
 	Utility::GetTextureDim ( m_vecResource[0], &m_Width, &m_Height );
-	
-	//{
-	////	MessageBox ( DXApp::GetInst ()->GetHwnd (), "이미지로드 실패", "", MB_OK );
-	//}
-	m_Origin = Vector2 (0,0);
+
+	m_TransWidth = m_Width;
+	m_TransHeight = m_Height;
+
+	m_Origin = Vector2 ( m_Width / 2, m_Height / 2 );
 	m_SourceRect.left = 0;
 	m_SourceRect.top = 0;
 	m_SourceRect.right = m_Width;
@@ -101,8 +111,8 @@ void DXSprite::Load ( vector<wstring> vecFile )
 	for (int i = 0; i < vecFile.size (); ++i)
 	{
 		HRESULT ( DirectX::CreateWICTextureFromFile ( DXApp::GetInst ()->GetDevice (), vecFile[i].c_str(), &m_vecResource[i], &m_vecTexture[i] ) );
-		Utility::GetTextureDim ( m_vecResource[i], &width, &height );
-		m_Origin = Vector2 ( 0, 0 );
+		Utility::GetTextureDim ( m_vecResource[i], &m_Width, &m_Height);
+		m_Origin = Vector2 ( m_Width /2, m_Height /2 );
 		m_SourceRect.left = 0;
 		m_SourceRect.top = 0;
 		m_SourceRect.right = m_Width;
@@ -123,9 +133,9 @@ void DXSprite::Render ( float x, float y )
 	{
 		case KIND_ONCE: case KIND_MULTI:
 		{
-			DXApp::GetInst ()->GetSpriteBatch ()->Draw ( m_vecTexture[m_CurrnetFrameOfMulti], Vector2 ( x, y ),
-				&m_SourceRect, DirectX::Colors::White.v, m_Angle, m_Origin,
-				m_Scale, DirectX::SpriteEffects::SpriteEffects_None, 0.0f );
+			DXApp::GetInst ()->GetSpriteBatch ()->Draw ( m_vecTexture[m_CurrnetFrameOfMulti], Vector2 ( x + m_TransWidth/2, y + m_TransHeight / 2),
+				&m_SourceRect, DirectX::Colors::White.v, m_Angle, Vector2(m_Width/2 + m_CenterOffsetX, m_Height / 2 + m_CenterOffsetX ),
+				m_Scale, m_SpriteEffect, 0.0f );
 		} break;
 
 		case KIND_SELF:
@@ -136,15 +146,20 @@ void DXSprite::Render ( float x, float y )
 			RECT frameRc = { m_CurrentFrameX * frameWidth, m_CurrentFrameY * frameHeight,
 				m_CurrentFrameX * frameWidth + frameWidth, m_CurrentFrameY * frameHeight + frameHeight };
 
-			DXApp::GetInst ()->GetSpriteBatch ()->Draw ( m_vecTexture[0], Vector2 ( x, y ),
+			m_Origin = Vector2 ( frameWidth / 2 + m_CenterOffsetX, frameHeight / 2 + m_CenterOffsetY );
+
+			DXApp::GetInst ()->GetSpriteBatch ()->Draw ( m_vecTexture[0], Vector2 ( x + frameWidth / 2 + m_CenterOffsetX, y + frameHeight / 2 + m_CenterOffsetY ),
 				&frameRc, DirectX::Colors::White.v, m_Angle, m_Origin,
-				m_Scale, DirectX::SpriteEffects::SpriteEffects_None, 0.0f );
+				m_Scale, m_SpriteEffect, 0.0f );
 		} break;
 	}
+
+	m_SpriteEffect = DirectX::SpriteEffects_None;
 }
 
 void DXSprite::SetFixSize ( float width, float height )
 {
+	m_Origin = Vector2 ( width / 2, height / 2 );
 	UINT oriWidth = m_Width;
 	UINT oriHeight = m_Height;
 
@@ -152,6 +167,9 @@ void DXSprite::SetFixSize ( float width, float height )
 	float transHeightRate = (float)height / oriHeight;
 
 	SetSize ( transWidthRate, transHeightRate );
+
+	m_TransWidth = width;
+	m_TransHeight = height;
 }
 
 void DXSprite::AddImage (wstring imageKey)

@@ -9,8 +9,8 @@
 #include "DXApp.h"
 
 Collider::Collider ()	: 
-	m_X(0),
-	m_Y(0),
+	m_WorldX(0),
+	m_WorldY(0),
 	m_Width(0),
 	m_Height(0),
 	m_IsEnable(false)
@@ -24,29 +24,17 @@ Collider::~Collider ()
 	//m_pSprite = NULL;
 }
 
-bool Collider::Init ()
-{
-	m_IsEnable = false;
-	return true;
-}
-
-void Collider::Init ( float x, float y, int width, int height )
+void Collider::Init ( float x, float y, int width, int height, COLLIDER_COLOR color )
 {
 	m_IsEnable = true;
 	m_Width = width;
 	m_Height = height;
-	m_Rc.left = m_X = x;
-	m_Rc.top = m_Y = y;
+	m_Rc.left = m_WorldX = x;
+	m_Rc.top = m_WorldY = y;
 	m_Rc.right = m_Rc.left + width;
 	m_Rc.bottom = m_Rc.top + height;
-}
 
-void Collider::Init ( int width, int height )
-{
-
-	m_IsEnable = true;
-	m_Width = width;
-	m_Height = height;
+	m_Color = color;
 }
 
 void Collider::Enable ()
@@ -85,18 +73,36 @@ void Collider::Update ( float x, float y )
 {
 	if (!m_IsEnable) return;
 
-	m_X = x;
-	m_Y = y;
+	m_WorldX = x;
+	m_WorldY = y;
 
 	PositionToRect ();
 }
 
 void Collider::Render ()
 {
+	if (!Camera::m_isRenderingCollider) return;
+
+	CAMERA->WorldToScreen ( &m_ScreenX, &m_ScreenY, m_WorldX, m_WorldY );
+
 	if (!m_IsEnable) return;
 
-	SPRITEMANAGER->FindSprite ( "컬라이더" )->SetFixSize ( m_Width, m_Height );
-	SPRITEMANAGER->FindSprite ( "컬라이더" )->Render ( m_X, m_Y );
+	string str;
+	switch (m_Color)
+	{
+	case COLOR_RED:
+		str = "컬라이더빨강";
+		break;
+	case COLOR_BLUE:
+		str = "컬라이더파랑";
+		break;
+	case COLOR_GREEN:
+		str = "컬라이더초록";
+		break;
+	}
+
+	SPRITEMANAGER->FindSprite ( str )->SetFixSize ( m_Width, m_Height );
+	SPRITEMANAGER->FindSprite ( str )->Render ( m_ScreenX, m_ScreenY );
 }
 
 bool Collider::RectInRect ( DXRECT otherRc )
@@ -149,10 +155,10 @@ bool Collider::RectOntheRect(Collider * collider, float Width)
 
 void Collider::PositionToRect ()
 {
-	m_Rc.left = m_X;
-	m_Rc.right = m_X + m_Width;
-	m_Rc.top = m_Y;
-	m_Rc.bottom = m_Y + m_Height;
+	m_Rc.left = m_WorldX;
+	m_Rc.right = m_WorldX + m_Width;
+	m_Rc.top = m_WorldY;
+	m_Rc.bottom = m_WorldY + m_Height;
 }
 
 //void Collider::Rectangle ( float left, float top, float right, float bottom )

@@ -233,10 +233,33 @@ bool DXApp::InitDirect3D ()
 	return true;
 }
 
+BYTE* DXApp::GetPixel (ID3D11Resource* sourTexture, float x, float y)
+{
+	ID3D11Resource* destTexture = NULL;
+
+	D3D11_BOX srcBox;
+	srcBox.left = x;
+	srcBox.right = srcBox.left + 1;
+	srcBox.top = y;
+	srcBox.bottom = srcBox.top + 1;
+	srcBox.front = 0;
+	srcBox.back = 1;
+
+	m_pImmediateCotext->CopySubresourceRegion ( destTexture, 0, 0, 0, 0, sourTexture, 0, &srcBox );
+
+	D3D11_MAPPED_SUBRESOURCE msr;
+	m_pImmediateCotext->Map ( destTexture, 0, D3D11_MAP_READ, 0, &msr );
+	BYTE *pixel = (BYTE*)msr.pData;
+	// copy data
+	m_pImmediateCotext->Unmap ( destTexture, 0 );
+
+	return pixel;
+}
+
 void DXApp::Begin ()
 {
 	m_pImmediateCotext->ClearRenderTargetView ( m_pRenderTargetView, DirectX::Colors::Black );
-	m_SpriteBatch->Begin ( DirectX::SpriteSortMode::SpriteSortMode_Deferred, m_pBlendState );
+	m_SpriteBatch->Begin ( DirectX::SpriteSortMode::SpriteSortMode_Immediate, m_pBlendState );
 }
 
 void DXApp::End ()
